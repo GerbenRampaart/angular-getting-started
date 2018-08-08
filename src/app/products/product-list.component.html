@@ -2,6 +2,9 @@
   <div class='card-header'>
     {{pageTitle}}
   </div>
+  <div class='card-header'>
+    {{errorMessage}}
+  </div>
   <div class='card-body'>
     <div class='row'>
       <div class='col-md-2'>Filter by:</div>
@@ -17,7 +20,7 @@
     </div>
     <div class='table-responsive'>
       <table class='table'
-             *ngIf='products && products.length'>
+             *ngIf='filteredProducts && filteredProducts.length'>
         <thead>
           <tr>
             <th>
@@ -34,7 +37,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor='let product of products'>
+          <tr *ngFor='let product of filteredProducts'>
             <td>
               <img *ngIf='showImage'
                    [src]='product.imageUrl'
@@ -43,19 +46,19 @@
                    [style.margin.px]='imageMargin'>
             </td>
             <td>
-              <!--
-              < a [routerLink]="['/products', product.productId]" >-->
+              <a [routerLink]="['/products', product.productId]" >
                 {{ product.productName }}
+              </a>
             </td>
             
-            <td>{{ product.productCode | lowercase}}</td>
+            <td>{{ product.productCode | lowercase | convertToSpaces: '-' }}</td>
             <td>{{ product.releaseDate }}</td>
             <td>{{ product.price | currency:'USD':'symbol':'1.2-2' }}</td>
-            <!--<td>
-              <pm-star [rating]='product.starRating'
+            <td>
+              <app-pm-star [rating]='product.starRating'
                        (ratingClicked)='onRatingClicked($event)'>
-              </pm-star>
-            </td>-->
+              </app-pm-star>
+            </td>
           </tr>
         </tbody>
       </table>
